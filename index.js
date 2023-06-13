@@ -284,27 +284,42 @@ console.log("divide(2)(10)", divide(2)(10)); // Виведе: 0.2
 // Задача 15: Створити мемоізовану версію функції, яка обчислює площу квадрата на основі довжини його сторони.
 
 function memoizedArea() {
-  // Ініціалізуємо примітивні змінні для зберігання попереднього аргументу та результату
-  // Повертаємо функцію яка приймає аргумент side - сторону квадрата
-  // Перевіряємо, чи є введена сторона такою ж, як і в попередньому виклику
-  // Виводимо повідомлення Fetching from cache
-  // Повертаємо попереднє значення
-  // Якщо сторона відрізняється від попередньої, обчислюємо площу та зберігаємо результат та аргумент для майбутнього використання
-  // Виводимо повідомлення Calculating result
-  // Розраховуємо площу
-  // prevSide присвоюємо сторону квадрата
-  // prevResult просвоюємо площу квадрата
-  // Повертаємо площу
+  let prevSide = null;
+  let prevResult = null;
+  return function (side) {
+    if (side === prevSide) {
+      console.log("Fetching from cache");
+      return prevResult;
+    } else {
+      console.log("Calculating result");
+      let result = side * side;
+      prevSide = side;
+      prevResult = result;
+      return result;
+    }
+  };
 }
+let squareArea = memoizedArea();
+// Ініціалізуємо примітивні змінні для зберігання попереднього аргументу та результату
+// Повертаємо функцію яка приймає аргумент side - сторону квадрата
+// Перевіряємо, чи є введена сторона такою ж, як і в попередньому виклику
+// Виводимо повідомлення Fetching from cache
+// Повертаємо попереднє значення
+// Якщо сторона відрізняється від попередньої, обчислюємо площу та зберігаємо результат та аргумент для майбутнього використання
+// Виводимо повідомлення Calculating result
+// Розраховуємо площу
+// prevSide присвоюємо сторону квадрата
+// prevResult просвоюємо площу квадрата
+// Повертаємо площу
 
 //Створюємо змінну squareArea якій присвоємо результат виконання функції memoizedArea
 
 console.log("Завдання 15 ====================================");
 // Розкоментуйте після виконаня завдання
-// console.log("squareArea(5)", squareArea(5)); // Обчислює і виводить 25
-// console.log("squareArea(5)", squareArea(5)); // Виводить "Fetching from cache" і виводить 25 з кешу
-// console.log("squareArea(6)", squareArea(6)); // Обчислює і виводить 36
-// console.log("squareArea(6)", squareArea(6)); // Виводить "Fetching from cache" і виводить 36 з кешу
+console.log("squareArea(5)", squareArea(5)); // Обчислює і виводить 25
+console.log("squareArea(5)", squareArea(5)); // Виводить "Fetching from cache" і виводить 25 з кешу
+console.log("squareArea(6)", squareArea(6)); // Обчислює і виводить 36
+console.log("squareArea(6)", squareArea(6)); // Виводить "Fetching from cache" і виводить 36 з кешу
 
 // Задача 16: Задача: створити функціональний вираз для обчислення кубу числа.
 let cube = function (n) {
@@ -317,19 +332,25 @@ console.log("cube(3)", cube(3)); // Виведе: 27
 
 // Задача 17: створити дві функції, одна з яких збільшує число на 1, а інша - множить число на 2, а потім створити композицію цих функцій.
 function increment(n) {
+  return n + 1;
   // Повертаємо n + 1
 }
 
 function double(n) {
+  return n * 2;
   // Повертаємо n*2
 }
 
 function compose(func1, func2) {
+  return function (n) {
+    return func2(func1(n));
+  };
+
   // Повертаємо нову функцію, яка приймає аргемент n
   // Повертаємо func2, в яку передаємо func1 з аргументом n
 }
-
+let createCompose = compose(increment, double);
 // Створюємо змінну createCompose якій присвоємо результат виконання функції compose з аргументами increment та double
 console.log("Завдання 17 ====================================");
 // Розкоментуйте після виконаня завдання
-// console.log("createCompose(5)", createCompose(5)); // Виведе: 12 (5+1=6, 6*2=12)
+console.log("createCompose(5)", createCompose(5)); // Виведе: 12 (5+1=6, 6*2=12)
